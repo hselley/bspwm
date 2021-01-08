@@ -1,0 +1,47 @@
+#! /bin/sh
+
+# Autostart applications
+pgrep -x sxhkd > /dev/null || sxhkd &
+~/.screenlayout/screen.sh &
+setxkbmap es &
+~/bin/picom.sh &
+#nitrogen --restore &
+bing-wallpaper -market=en-US &
+~/.config/polybar/launch.sh &
+redshift-gtk &
+caffeine --activate &
+~/bin/pcloud &
+nm-applet &
+#variety & 
+killall -q notify-osd &
+dunst ~/.config/dunst/dunstrc &
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec xfce4-clipman &
+exec numlockx on &
+exec blueberry-tray &
+
+bspc monitor -d I II III IV V VI VII VIII IX X
+bspc monitor HDMI2 -d XI XII XIII XIV XV XVI XVII XVIII XIX XX
+
+~/bin/top_padding.sh 
+#bspc config top_padding 	 20
+bspc config border_width         2
+bspc config window_gap           4
+
+bspc config split_ratio          0.5
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# Rules for applications on specific desktops
+bspc rule -a Chromium desktop='^11'
+bspc rule -a firefox  desktop='^2' 
+bspc rule -a Mailspring desktop='^3' 
+bspc rule -a Ferdi desktop='^4' 
+bspc rule -a TelegramDesktop  desktop='^4' 
+bspc rule -a Google-chrome desktop='^5'
+bspc rule -a Clementine desktop='^18'
+bspc rule -a Spotify desktop='^19'
+#bspc rule -a mplayer2 state=floating
+#bspc rule -a Kupfer.py focus=on
+#bspc rule -a Screenkey manage=off
+#bspc rule -a Gimp desktop='^8' state=floating follow=on
