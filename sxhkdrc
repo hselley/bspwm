@@ -7,10 +7,11 @@ super + Return
 	termite
 
 # program launcher
-super + @space
-	rofi -show drun -show-icons
 super + d
 	dmenu_run
+
+super + @space
+	rofi -show drun -show-icons
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -21,15 +22,14 @@ super + Escape
 #
 
 # quit/restart bspwm
-#super + alt + {q,r}
-#	bspc {quit,wm -r}
 super + alt + r
 	bspc wm -r
+
 super + alt + q
-	~/bin/rofi-shutdown.sh	
+	~/bin/rofi-shutdown.sh
 
 # close and kill
-super + {_,shift + }q
+super + {q,w}
 	bspc node -{c,k}
 
 # alternate between the tiled and monocle layout
@@ -50,7 +50,7 @@ super + g
 
 # set the window state
 super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {\~tiled,\~pseudo_tiled,\~floating,\~fullscreen}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -79,10 +79,6 @@ super + bracket{left,right}
 # focus the last node/desktop
 #super + {grave,Tab}
 #	bspc {node,desktop} -f last
-super + Tab
-	rofi -show window -show-icons
-alt + Tab
-	bspc desktop -f last
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -93,28 +89,6 @@ super + {o,i}
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
-# Second monitor
-super + alt + 1
-	bspc desktop -f XI
-super + alt + 2
-	bspc desktop -f XII
-super + alt + 3
-	bspc desktop -f XIII
-super + alt + 4
-	bspc desktop -f XIV
-super + alt + 5
-	bspc desktop -f XV
-super + alt + 6
-	bspc desktop -f XVI
-super + alt + 7
-	bspc desktop -f XVII
-super + alt + 8
-	bspc desktop -f XVIII
-super + alt + 9
-	bspc desktop -f XIX
-super + alt + 0
-	bspc desktop -f XX
-
 
 #
 # preselect
@@ -125,8 +99,8 @@ super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
-#super + ctrl + {1-9}
-#	bspc node -o 0.{1-9}
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
 super + ctrl + space
@@ -154,11 +128,13 @@ super + {Left,Down,Up,Right}
 
 # Media Controls
 XF86AudioLowerVolume
-	amixer set Master 5%-
+	~/bin/changeVolumeDown 5
+#	pamixer -d 5
 XF86AudioRaiseVolume
-	amixer set Master 5%+
+	~/bin/changeVolumeUp 5
+#	pamixer -i 5
 XF86AudioMute
-	amixer set Master toggle
+	pamixer --toggle-mute
 XF86AudioPlay
 	playerctl play-pause
 XF86AudioPause
@@ -167,12 +143,6 @@ XF86AudioNext
 	playerctl next
 XF86AudioPrev
 	playerctl previous
-
-# Brightness control
-XF86MonBrightnessUp 
-	xbacklight -inc 2       # increase screen brightness
-XF86MonBrightnessDown 
-	xbacklight -dec 2     # decrease screen brightness
 
 # Lockscreen 
 super + x
@@ -187,7 +157,19 @@ super + n
 	nautilus
 
 # focus the next/previous desktop in the current monitor
-super + alt + comma
+super + alt + Left
 	bspc desktop -f prev.local
-super + alt + period
+super + alt + Right
 	bspc desktop -f next.local
+
+# focus the older or newer node in the focus history
+super + alt + {Down,Up}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+super + Tab
+	rofi -show window -show-icons
+
+# Switch to last focused node
+alt + Tab
+	bspc desktop -f last
