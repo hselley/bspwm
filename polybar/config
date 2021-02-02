@@ -18,10 +18,12 @@
 
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #222
+;background = #222
+background = #3b4252
 background-alt = #444
 ;foreground = ${xrdb:color7:#222}
-foreground = #dfdfdf
+;foreground = #dfdfdf
+foreground = #eceff4
 foreground-alt = #555
 primary = #ffb52a
 secondary = #e60053
@@ -29,7 +31,7 @@ alert = #bd2c40
 
 [bar/bar1]
 enable-ipc = true
-;monitor = ${env:MONITOR:HDMI-1}
+monitor = HDMI-1
 width = 100%
 height = 22
 ;offset-x = 1%
@@ -54,14 +56,17 @@ module-margin-right = 2
 
 font-0 = Fira Sans:pixelsize=11;1
 font-1 = Font Awesome 5 Free:size=10;1
-font-2 = fixed:pixelsize=10;1
-font-3 = Weather Icons:size=12;1
+font-2 = Weather Icons:size=12;1
+font-3 = fixed:pixelsize=10;1
 font-4 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-5 = siji:pixelsize=10;1
+font-6 = Font Awesome 5 Free:pixelsize=12;2
+font-7 = Font Awesome 5 Free Solid:pixelsize=12;2
+font-8 = Font Awesome 5 Brands:pixelsize=12;2
 
 modules-left = bspwm spotify previous playpause next
-modules-center = xwindow 
-modules-right = updates xbacklight pulseaudio cpu memory battery openweathermap-simple date 
+modules-center = xwindow
+modules-right = ipc-dunst updates pulseaudio cpu memory openweathermap-simple date
 
 tray-position = right
 tray-padding = 2
@@ -72,20 +77,79 @@ wm-restack = bspwm
 
 ;override-redirect = true
 
-scroll-up = bspwm-desknext
-scroll-down = bspwm-deskprev
+;scroll-down = bspwm-desknext
+;scroll-up = bspwm-deskprev
+scroll-down = #bspwm.next
+scroll-up = #bspwm.prev
 
 ;scroll-up = i3wm-wsnext
 ;scroll-down = i3wm-wsprev
 
 cursor-click = pointer
-cursor-scroll = ns-resize
+;cursor-scroll = ns-resize
+
+[bar/bar2]
+enable-ipc = true
+monitor = HDMI-2
+width = 100%
+height = 22
+;offset-x = 1%
+;offset-y = 1%
+radius = 0.0
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 2
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Fira Sans:pixelsize=11;1
+font-1 = Font Awesome 5 Free:size=10;1
+font-2 = Weather Icons:size=12;1
+font-3 = fixed:pixelsize=10;1
+font-4 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-5 = siji:pixelsize=10;1
+font-6 = Font Awesome 5 Free:pixelsize=12;2
+font-7 = Font Awesome 5 Free Solid:pixelsize=12;2
+font-8 = Font Awesome 5 Brands:pixelsize=12;2
+
+modules-left = bspwm spotify previous playpause next
+modules-center = xwindow
+modules-right = notifications pulseaudio cpu memory openweathermap-simple date
+
+;tray-position = right
+;tray-padding = 2
+;tray-background = #0063ff
+
+wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+scroll-down = bspwm-desknext
+scroll-up = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+;cursor-scroll = ns-resize
 
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:80:...%
-format = <label> 
-format-underline = #910000
+format = <label>
+format-underline = #a1a7b3
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -117,8 +181,11 @@ label-unmounted-foreground = ${colors.foreground-alt}
 type = internal/bspwm
 
 label-focused = %index%
-label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
+#label-focused-background = ${colors.background-alt}
+label-focused-foreground = #030303
+label-focused-background = #a1a7b3
+#label-focused-underline= ${colors.primary}
+label-focused-underline= #04e094
 label-focused-padding = 4
 
 label-occupied = %index%
@@ -130,7 +197,7 @@ label-urgent-padding = 2
 
 label-empty = %index%
 label-empty-foreground = ${colors.foreground-alt}
-label-empty-padding = 2
+label-empty-padding = 1
 
 ; Separator in between workspaces
 ; label-separator = |
@@ -189,9 +256,8 @@ label-song-ellipsis = true
 [module/xbacklight]
 type = internal/xbacklight
 
-format = <label> 
-format-underline = #008a25
-label = BL %percentage%%
+format = <label> <bar>
+label = BL
 
 bar-width = 10
 bar-indicator = |
@@ -227,7 +293,7 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = wlp2s0
+interface = wlp14s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -249,7 +315,7 @@ ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
-interface = enp3s0
+interface = enp10s0
 interval = 3.0
 
 format-connected-underline = #55aa55
@@ -267,7 +333,7 @@ format-disconnected =
 type = internal/date
 interval = 1
 
-date = "%d %b %Y"
+date = "%d-%b-%Y"
 date-alt = " %Y-%m-%d"
 
 time = %H:%M:%S
@@ -282,8 +348,8 @@ label = %date% %time%
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume>
-format-volume-underline = #a305f7
+format-volume = <label-volume> 
+format-volume-underline = #8c8103
 label-volume = VOL %percentage%%
 label-volume-foreground = ${root.foreground}
 
@@ -338,7 +404,7 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 [module/battery]
 type = internal/battery
 battery = BAT0
-adapter = AC
+adapter = ADP1
 full-at = 98
 
 format-charging = <animation-charging> <label-charging>
@@ -420,17 +486,15 @@ menu-2-1-exec = menu-open-0
 type = custom/script
 exec = ~/.config/polybar/scripts/openweathermap-simple.sh
 interval = 600
-format = <label>
 format-underline = #fc7703
 label-font = 3
 
 [module/updates]
-type = custom/script
+type = custom/script 
 exec = checkupdates | wc -l
-interval = 600
 format = Up: <label>
 format-underline = #81ff4f
-label-font = 3
+interval = 600
 
 [module/previous]
 type = custom/ipc
@@ -466,7 +530,15 @@ type = custom/ipc
 ; Default
 hook-0 = echo ""
 ; Playing/paused show song name and artist
-hook-1 = spotifyctl -q status --format '%artist%: %title%' --max-length 30  --max-title-length 15 --max-artist-length 15 --trunc '...'
+hook-1 = spotifyctl -q status --format '%artist%: %title%' --max-length 40 --max-title-length 20 --max-artist-length 20 --trunc '...'
+
+[module/ipc-dunst]
+type = custom/ipc
+initial = 1
+hook-0 = echo "%{A1:notify-send "DUNST_COMMAND_PAUSE" && polybar-msg hook ipc-dunst 2:}%{A}" &
+hook-1 = echo "%{A1:notify-send "DUNST_COMMAND_RESUME" && polybar-msg hook ipc-dunst 1:}%{F-}%{A}" &
+#hook-1 = echo "%{A1:notify-send "DUNST_COMMAND_RESUME" && polybar-msg hook ipc-dunst 1:}%{F#ff2200}%{F-}%{A}" &
+
 
 [settings]
 screenchange-reload = true
@@ -474,7 +546,7 @@ screenchange-reload = true
 ;compositing-background = screen
 ;compositing-foreground = source
 ;compositing-border = over
-;pseudo-transparency = false
+pseudo-transparency = true
 
 [global/wm]
 margin-top = 5
